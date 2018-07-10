@@ -1,0 +1,161 @@
+  <form [formGroup]="UserTrayForm" >
+ <div class="row">
+    <div class="col-md-12">
+      <h2>User Manager Tray</h2>
+      <hr class="title-hr">
+      <div *ngIf="successMessage" class="alert alert-success" role="alert">
+      <p class="text-xs-center"><strong>{{successMessage}}</strong></p>
+    </div>
+    <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+      <p class="text-xs-center"><strong>{{errorMessage}}</strong></p>
+    </div>
+    <div *ngIf="warnMessage" class="alert alert-warning text-center" role="alert">
+      <p class="text-xs-center"><strong>{{warningMessage}}</strong></p>
+    </div>
+      <div class="row">
+         <!-- Prompt -->
+        <modal-popup [(visible)]="showDialog" title="Smart Cities Message">
+          {{messageModal}}
+        <hr>
+        <div *ngIf="includeText">
+            <textarea  [formControl]="Modal.controls['message']" id="_message" type="text"  class="form-control"> </textarea>
+        </div>
+        
+        <div *ngIf="Modal.controls['message'].hasError('required') && Modal.controls['message'].touched" class="alert alert-danger">Comment Required *</div>
+        <hr *ngIf="includeText">
+        <div class="row">
+          <div class="col">
+            <button *ngIf="isConfirm" type="button" class="btn btn-danger btn-block" data-dismiss="modal" (click)="showDialog = false">Cancel</button>
+          </div>
+          <div class="col">
+            <button type="button" [disabled]="!Modal.valid" class="btn btn-smart btn-block" data-dismiss="modal" (click)="deleteUser()">Accept</button>
+          </div>
+        </div>
+
+        </modal-popup>
+        <!-- ************************************************* -->
+        <!-- Modal-->
+        <modal-popup [(visible)]="modShowDialog" title="Smart Cities Message">
+          {{modMessageModal}}
+        <hr>
+        <div *ngIf="modIncludeText"  >
+          <textarea type="text"  class="form-control"> </textarea>
+        </div>
+        <hr *ngIf="modIncludeText">
+        <button type="button"  class="btn btn-smart btn-block" data-dismiss="modal" (click)="modShowDialog = false">Accept</button>
+
+        
+        </modal-popup>
+        <!-- ************************************************* -->
+           <div class="col-md-6">
+          <div class="form-group">
+            <label for="">Name</label>
+            <input type="text" [formControl]="UserTrayForm.controls['name']" id="name"  class="form-control" placeholder="Search by Name"/>
+            <div *ngIf="UserTrayForm.controls['name'].hasError('name') && UserTrayForm.controls['name'].touched" class="alert alert-danger" i18n>At least fill Name. Please.</div>
+          </div>
+        </div>
+        
+         <div class="col-md-6">
+          <div class="form-group">
+            <label for="">Family Name</label>
+            <input type="text" [formControl]="UserTrayForm.controls['familyname']" id="familyname"  class="form-control" placeholder="Search by Family Name"/>
+          </div>
+        </div>
+       
+
+       
+
+        
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="">Email</label>
+            <input type="text" id="email"  [formControl]="UserTrayForm.controls['email']"   class="form-control" placeholder="Search by Email"/>
+            
+            
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="">Role</label>
+           <select id="role" [formControl]="UserTrayForm.controls['role']" class="form-control" [(ngModel)]="userModel.role">
+                <option *ngFor="let role of roles" [ngValue]="role.name">{{role.name}}</option>
+              </select>
+              
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6"></div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <span class="labelHidden"></span>
+            <button (click)="clear()" class="btn btn-smart btn-block" > Clear </button>
+          </div>
+        </div>
+         <div class="col-md-3">
+          <div class="form-group">
+            <span class="labelHidden"></span>
+            <button (click)="getBy(UserTrayForm.value)" class="btn btn-smart btn-block" > Search </button>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+           <div class="col-md-9"></div>
+            <div class="col-md-3 ">
+          <div class="form-group">
+            <span class="labelHidden"></span>
+            <a [routerLink]="['/smart-cities/user-manager/user-register']" class="btn btn-smart btn-block" > Add </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="table-responsive">
+            <div class="no-more-tables">
+              <table class="table ">
+                  <thead class="thead-default">
+                      <tr >
+                          <th>Name</th>
+                          <th>Family name</th>
+                          <th>Email</th>
+                          <th>Role</th>
+                          <th>Delete</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr *ngFor="let user of users | paginate: { itemsPerPage: 4, currentPage: p }">
+                          <td data-title="Name">{{user.name}}</td>
+                          <td data-title="Family name">{{user.familyName}}</td>
+                          <td data-title="Email">{{user.email}}</td>
+                          <td data-title="Role">{{user.role}}</td>
+                          <td data-title="Delete">
+                            <a *ngIf="user.canDel==true" class="btn btn-danger"  ngbTooltip="Delete" placement="top">
+                              <i aria-hidden="true" class="fa fa-trash" (click)="showDialog=true;_user=user"></i>
+                            </a>
+                          </td>
+                      </tr>
+                  </tbody>
+              </table>
+            </div>
+        </div>
+        </div>
+         <div class="col-md-12">
+          <div class="form-group">
+            <pagination-controls (pageChange)="p = $event"></pagination-controls>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6 offset-md-6">
+          <div class="form-group">
+            <button routerLink="/smart-cities" type="submit" class="btn btn-danger btn-block" > Cancel </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  </form>

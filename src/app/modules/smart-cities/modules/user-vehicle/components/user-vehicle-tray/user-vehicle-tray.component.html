@@ -1,0 +1,118 @@
+  
+
+  
+  <div class="row">
+    <div class="col-md-12">
+      <h2>Vehicles profile</h2>
+      <hr class="title-hr">
+      <div class="row">
+        <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+          <p class="text-xs-center"><strong>{{errorMessage}}</strong></p>
+        </div>
+         <!-- Implementación de ventana modal -->
+        <modal-popup [(visible)]="showDialog" title="System Message">
+          {{messageModal}}
+        <hr>
+        <textarea *ngIf="includeText" type="text" class="form-control"> </textarea>
+        <hr *ngIf="includeText">
+        <div class="row">
+          <div *ngIf="isConfirm" class="col">
+            <button type="button" class="btn btn-danger btn-block" data-dismiss="modal" (click)="showDialog = false">Cancel</button>
+          </div>
+          <div class="col">
+            <button type="button" class="btn btn-smart btn-block" data-dismiss="modal" (click)="confirmDelete()">Accept</button>
+          </div>
+        </div>
+        </modal-popup>
+        <!-- ************************************************* -->
+
+        <div class="col-md-12">
+          <div class="form-group">
+            <p>Register / Edit vehicle data</p>
+            <p>You can add information of means of transport that you usually use to move inside the city.</p>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="inlineFormInputGroup">Search</label>
+            <input id="myInput" type="text" (keyup)="FilterData()" class="form-control" placeholder="Search..."/>
+          </div>
+        </div>
+        <div class="col-md-3 ">
+          <div class="form-group">
+            <span class="labelHidden"></span>
+            <button [routerLink]="['/smart-cities/user-vehicle/vehicle', '']" type="submit" class="btn btn-smart btn-block" > Add </button>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="form-group">
+            <hr class="subTitle-hr">
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="table-responsive">
+            <div class="no-more-tables">
+              <table id="myTable" class="table ">
+                <thead class="thead-default">
+                    <tr>
+                        <th>Name</th>
+                        <th>Vehicle type</th>
+                        <th>Plate identifier</th>
+                        <th>Brand name</th>
+                        <th>Model name</th>
+                        <th class="text-center">Favorite</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let vehicle of vehicles | paginate: { itemsPerPage: 4, currentPage: p }">
+                        <td data-title="Name">{{vehicle.name}}</td>
+                        <td data-title="Vehicle type">{{vehicle.vehicleType.name}}</td>
+                        <td data-title="Plate identifier">{{vehicle.vehiclPlateIdentifier}}</td>
+                        <td data-title="Brand name">{{vehicle.brandName}}</td>
+                        <td data-title="Model name">{{vehicle.modelName}}</td>
+                        <td data-title="Favorite" class="text-center"><span class="fa fa-star" *ngIf="vehicle.favorite"></span></td>
+                        <td data-title="Edit">
+                          <a [routerLink]="['/smart-cities/user-vehicle/vehicle', vehicle.index]" 
+                            class="btn btn-smart" ngbtooltip="Edit" placement="top">
+                            <i aria-hidden="true" class="fa fa-pencil"></i>
+                          </a>
+                        </td>
+                        <td data-title="Delete">
+                          <!--<a class="btn btn-danger" ngbtooltip="Edit" placement="top">
+                            <i aria-hidden="true" class="fa fa-trash" (click)="showDialog=true;Objvehicle=vehicle"> </i>
+                          </a>-->
+                          <button aria-hidden="true" class="btn btn-danger" ngbtooltip="Delete" placement="top" (click)="showDialog=true;Objvehicle=vehicle">
+                            <i aria-hidden="true" class="fa fa-trash"> </i>
+                          </button>
+                        </td>
+                    </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+
+        </div>
+        <div class="col-md-12">
+          <div class="form-group">
+            <pagination-controls (pageChange)="p = $event"></pagination-controls>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 offset-md-6">
+          <div class="form-group">
+            <span class="labelHidden"></span>
+            <button routerLink="/smart-cities" type="submit" class="btn btn-danger btn-block" > Cancel </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>

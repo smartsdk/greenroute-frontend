@@ -1,0 +1,108 @@
+<div class="row">
+  <div class="col-md-12">
+    <h2>Groups</h2>
+    <hr class="title-hr">
+    <div class="row">
+      <div class="col-md-12">
+        <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+          <p class="text-xs-center"><strong>{{errorMessage}}</strong></p>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+
+      <!-- Implementación de ventana modal -->
+      <modal-popup [(visible)]="showDialog" title="System Message">
+        {{messageModal}}
+        <hr>
+        <textarea *ngIf="includeText" type="text" class="form-control"> </textarea>
+        <hr *ngIf="includeText">
+        <div class="row" *ngIf="isConfirm" >
+          <div class="col">
+            <button  type="button" class="btn btn-danger btn-block" data-dismiss="modal" (click)="showDialog = false">Cancel</button>
+          </div>
+          <div class="col">
+            <button  type="button" class="btn btn-smart btn-block" data-dismiss="modal" (click)="confirmDelete()">Accept</button>
+          </div>
+        </div>
+
+        <div class="row" *ngIf="!isConfirm" >
+          <div class="col">
+            <button  type="button" class="btn btn-smart btn-block" data-dismiss="modal" (click)="showDialog = false">Accept</button>
+          </div>
+        </div>
+      </modal-popup>
+      <!-- ************************************************* -->
+      <div class="col-md-12">
+        <p>As a super admin, you can create, edit, update and delete groups. Remember, the groups created will be visualized for all the final users.</p>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="inlineFormInputGroup">Search</label>
+          <input id="myInput" type="text" (keyup)="FilterData()" class="form-control" placeholder="Search..." />
+        </div>
+      </div>
+      <div class="col-md-3 ">
+        <div class="form-group">
+          <span class="labelHidden"></span>
+          <button [routerLink]="['/smart-cities/group/group', 0]" type="submit" class="btn btn-smart btn-block"> Add </button>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <div class="form-group">
+          <hr class="subTitle-hr">
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="table-responsive">
+          <div class="no-more-tables">
+            <table id="myTable" class="table ">
+              <thead class="thead-default">
+                <tr>
+                  <th>Current groups list</th>
+                  <th></th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let group of groups | paginate: { itemsPerPage: 4, currentPage: p }">
+                  <td data-title="Current groups list">{{group.group}}</td>
+                  <td data-title="Edit" class="text-center btnSmall">
+                    <a [routerLink]="['/smart-cities/group/group', group.id]" class="btn btn-smart" ngbtooltip="Edit" placement="top">
+                      <i aria-hidden="true" class="fa fa-pencil"></i>
+                    </a>
+                  </td>
+                  <td data-title="Delete" class="text-center btnSmall">
+                    <!--<a class="btn btn-danger" ngbtooltip="Edit" placement="top">
+                    <i aria-hidden="true" class="fa fa-trash" (click)="showDialog=true;Objgroup=group"> </i>
+                  </a>-->
+                    <button aria-hidden="true" class="btn btn-danger" ngbtooltip="Delete" placement="top" (click)="messageModal = 'Are you sure to delete this register of his group?';isConfirm=true;showDialog=true;Objgroup=group;">
+                      <i aria-hidden="true" class="fa fa-trash"> </i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+
+
+      </div>
+      <div class="col-md-12">
+        <div class="form-group">
+          <pagination-controls (pageChange)="p = $event"></pagination-controls>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6 offset-md-6">
+        <div class="form-group">
+          <button routerLink="/smart-cities" type="submit" class="btn btn-danger btn-block" > Cancel </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

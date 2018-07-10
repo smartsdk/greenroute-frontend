@@ -1,0 +1,81 @@
+<div class="row">
+  <div class="col-md-12">
+    <div *ngIf="successMessage" class="alert alert-success" role="alert">
+      <p class="text-xs-center"><strong>{{successMessage}}</strong></p>
+    </div>
+    <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+      <p class="text-xs-center"><strong>{{errorMessage}}</strong></p>
+    </div>
+    <h2>{{title}}</h2>
+    <hr class="title-hr">
+    <div class="row">
+      <div class="col-md-12">
+        <p>Now, you can create a new group of alerts for users. You must add a name and from the list of types of alerts, you
+          must select the types of alerts that the new group will receive</p>
+      </div>
+      <div class="col-md-12">
+        <div class="form-group">
+          <label for="health-state">Name</label>
+          <input type="text" class="form-control" placeholder="Name" id="group" [(ngModel)]="group.group" />
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-12">
+    <div class="row">
+      <div class="card-block">
+        <div id="accordion" role="tablist" aria-multiselectable="true">
+          <div class="card" *ngFor="let notification of allNotificationTypes">
+            <div class="card-header" style="padding:8px 40px" role="tab" id="headingOne">
+              <div class="row">
+              <h6 class="mb-0">
+                <input (change)="afterChange($event)" class="form-check-input notification" name="notification" type="checkbox" [checked]="group.notificationIds != null && group.notificationIds?.indexOf(notification.id) !== -1"  value="{{notification.id}}">
+                <a (click)="beforeChange('#card' + notification.id)" data-toggle="collapse" data-parent="#accordion" [routerLink]="['./']" aria-expanded="true"
+                  aria-controls="collapseOne">
+              {{notification.name}}
+              </a>
+              </h6>
+              </div>
+            </div>
+
+            <div [attr.id]="'card' + notification.id"  class="collapse" role="tabpanel" aria-labelledby="headingOne">
+              <div class="card-block">
+                <div class="row">
+                <div class="col-md-4" *ngFor="let subnotification of notification.subnotifications">
+                  <label>
+                        • {{subnotification}}
+                </label>
+                </div>
+              </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-12">
+    <div class="row">
+      <div class="col-md-3 offset-md-6">
+        <div class="form-group">
+          <a [routerLink]="['/smart-cities/group/groups']" class="btn btn-danger btn-block"> Cancel </a>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <button id="btnSave" [disabled]="enableSave()" class="btn btn-smart btn-block" (click)="save()"> Save </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--Implementación de ventana modal -->
+<modal-popup [(visible)]="showDialog" title="System Message">
+  {{messageModal}}
+  <hr>
+  <textarea *ngIf="includeText" type="text" class="form-control"> </textarea>
+  <hr *ngIf="includeText">
+  <button type="button" class="btn btn-smart btn-block" data-dismiss="modal" (click)="closeModal()">Accept</button>
+</modal-popup>
+<!-- ************************************************* -->
