@@ -21,14 +21,17 @@ export class SignupComponent implements OnInit, OnDestroy {
 
   showDialog: boolean;
   showErrorDialog: boolean;
+  showTermsDialog: boolean;
   messageModal: string;
 
   constructor(private signupService: SignupService, private router: Router, fb: FormBuilder) {
     const password: FormControl = new FormControl('', [Validators.required, Validators.minLength(8)]);
+    const agree: FormControl = new FormControl(null, [Validators.required]);
 
     this.complexForm = fb.group({
       'email': [null, [Validators.required, CustomValidators.email]],
       'password': password,
+      'agree': agree,
       'confirmPassword': [null, [Validators.required, CustomValidators.equalTo(password)]]
     });
   }
@@ -66,6 +69,10 @@ export class SignupComponent implements OnInit, OnDestroy {
   showMessage(message: string) {
     this.messageModal = message;
     this.showDialog = true;
+  }
+
+  showTerms() {
+    this.showTermsDialog = true;
   }
 
   private showErrorMessage(message: string) {

@@ -21,6 +21,7 @@ import { UserAccountModule } from './modules/user-account/user-account.module';
 import { NotificationModule } from './modules/notification/notification.module';
 
 import { ModalPopupModule  } from '../../usable-component/modal-popup/modalpopup.module';
+import { ModalPolicyModule  } from '../../usable-component/modal-policy/modalpolicy.module';
 
 import { UserManagerModule } from './modules/user-manager/user-manager.module';
 import { UserVehicleModule } from './modules/user-vehicle/user-vehicle.module';
@@ -47,6 +48,7 @@ import { PublicTransportModule } from './modules/public-transport/public-transpo
     GroupModule,
     VehicleTypeModule,
     ModalPopupModule,
+    ModalPolicyModule,
     TransportScheduleModule,
     PublicTransportModule
   ],
