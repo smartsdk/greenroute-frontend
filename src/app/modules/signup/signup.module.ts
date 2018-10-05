@@ -10,6 +10,7 @@ import { AccountVerificationComponent } from './account-verification.component';
 // Elementos del template
 import { TemplateModule } from '../../template/template.module';
 import { ModalPopupModule  } from '../../usable-component/modal-popup/modalpopup.module';
+import { ModalPolicyModule  } from '../../usable-component/modal-policy/modalpolicy.module';
 
 @NgModule({
   imports: [
@@ -19,7 +20,8 @@ import { ModalPopupModule  } from '../../usable-component/modal-popup/modalpopup
     NgbModule,
     RouterModule,
     TemplateModule,
-    ModalPopupModule
+    ModalPopupModule,
+    ModalPolicyModule
   ],
   declarations: [
     SignupComponent,

@@ -47,6 +47,23 @@
                         <div *ngIf="complexForm.controls['confirmPassword'].hasError('equalTo') && complexForm.controls['confirmPassword'].touched" class="alert alert-danger" i18n>Password don’t match.</div>
                       </div>
                     </div>
+
+                    <div class="col-lg-12">
+
+                          <div class="form-group">
+                              <div class="col-xs-6 col-xs-offset-3">
+                                  <div class="checkbox">
+                                      <label>
+                                          <input type="checkbox" id="agree" name="agree" value="agree" formControlName="agree" required/> Agree with the
+                                      </label>
+                                      <span> <a data-toggle="modal" [routerLink]="" (click)="showTerms()">Privacy Policy</a></span>
+                                  </div>
+                              </div>
+                              <div *ngIf="complexForm.controls['agree'].hasError('required') && complexForm.controls['agree'].touched" class="alert alert-danger" i18n>Must agree with the privacy policy</div>
+                          </div>
+
+                    </div>
+
                     <div class="col-md-6">
                       <div class="form-group">
                         <a class="btn btn-danger btn-block" routerLink="/"> Cancel </a>
@@ -88,3 +105,8 @@
   <hr/>
   <button type="button" class="btn btn-smart btn-block" data-dismiss="modal" (click)="showErrorDialog = false">Accept</button>
 </modal-popup>
+
+<modal-policy [(visible)]="showTermsDialog" title="Privacy Policy">
+  <hr/>
+  <button type="button" class="btn btn-smart btn-block" data-dismiss="modal" (click)="showTermsDialog = false">Accept</button>
+</modal-policy>
