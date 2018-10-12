@@ -6,7 +6,7 @@
 export const environment = {
   production: false,
   backend_sdk: 'http://localhost:9000/back-sdk',
-  alerts_url: 'http://localhost:8443/#/',
+  alerts_url: 'https://smartsdkitesm.com',
   statistics_url: 'http://localhost:3000/dashboard/db/airquality-dashboard',
-  routingmap_url: 'http://localhost:8081/'
+  routingmap_url: 'http://greenroute.smartsdk.ubiwhere.com/'
 };
