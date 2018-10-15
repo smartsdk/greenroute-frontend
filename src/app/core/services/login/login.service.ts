@@ -13,6 +13,8 @@ import { role } from '../../../core/models/role';
 
 import { IdentityUser, TokenInfo } from '../../models/identity-user';
 
+import { CookieService, CookieOptionsArgs } from 'angular2-cookie/core';
+
 const base_rest_path = environment.backend_sdk + '/security';
 const login_url = base_rest_path + '/login';
 const logout_url = base_rest_path + '/logout';
@@ -25,7 +27,7 @@ export class LoginService {
   inRefresh: boolean;
   redirectUrl: string;
 
-  constructor(private http: Http) {}
+  constructor(private http: Http, private cookieService:CookieService) {}
 
   //Request to login endpoint
   login(email: string, password: string): Observable<IdentityUser> {
@@ -102,10 +104,20 @@ export class LoginService {
   private saveToken(identityUser: IdentityUser) {
     identityUser.date = new Date();
     localStorage.setItem(constants.tokenInfoName, JSON.stringify(identityUser));
+
+    // Uncomment to use on secure domain
+    // var options: CookieOptionsArgs = {
+    //   domain: "greenroutesdk.com.mx",
+    //   secure: true
+    // }
+
+    this.cookieService.putObject(constants.tokenInfoName, JSON.stringify(identityUser)/*, options*/);
   }
 
   private deleteToken() {
     localStorage.removeItem(constants.tokenInfoName);
+    //Cookie token
+    this.cookieService.remove(constants.tokenInfoName);
   }
 
   isLoggedIn(): boolean {
