@@ -5,6 +5,7 @@ import { HttpModule, JsonpModule } from '@angular/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RouterModule } from '@angular/router';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { CookieService } from 'angular2-cookie/services/cookies.service';
 
 import { AppComponent } from './app.component';
 import { PageNotFoundComponent } from './template/page-not-found/page-not-found.component';
@@ -91,7 +92,8 @@ import { appRoutes } from './app.routes';
     AgencyService,
     TransportScheduleService,
     PublicTransportFuelTypeService,
-    PublicTransportService
+    PublicTransportService,
+    CookieService
   ],
   bootstrap: [AppComponent]
 })
