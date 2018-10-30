@@ -1,10 +1,35 @@
+### STAGE 1: Build ###
+
+# We label our stage as ‘builder’
+FROM node:6.14.4 as builder
+
+COPY package.json package-lock.json ./
+
+
+## Storing node modules on a separate layer will prevent unnecessary npm installs at each build
+RUN npm i && mkdir /ng-app && cp -R ./node_modules ./ng-app
+
+WORKDIR /ng-app
+
+COPY . .
+
+## Build the angular app in production mode and store the artifacts in dist folder
+RUN $(npm bin)/ng build --env prod
+
+### STAGE 2: Setup ###
+
 FROM nginx:1.13.6-alpine
-COPY dist /usr/share/nginx/html/
+
+COPY --from=builder /ng-app/dist /usr/share/nginx/html
+#COPY dist /usr/share/nginx/html/
 COPY start_front.sh /tmp
 EXPOSE 80
 
 # Override these two with the correct urls at runtime :)
-ENV GR_BACKEND_URL "http://192.168.99.100:8080/back-sdk"
-ENV GR_GRAFANA_URL "http://192.168.99.100:3000/dashboard/db/airquality-dashboard"
+ENV GR_BACKEND_URL "http://smartsdk-back:8080/back-sdk"
+ENV GR_GRAFANA_URL "http://grafana-back:3000/dashboard/db/airquality-dashboard"
+ENV GR_ALERTS_URL "http://alerts-back:8081/#"
+ENV GR_ROUTINGMAP_URL "http://map-back:4200/"
 
 CMD ["sh", "/tmp/start_front.sh"]
+
