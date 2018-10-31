@@ -1,19 +1,17 @@
 ### STAGE 1: Build ###
 
-# We label our stage as ‘builder’
 FROM node:6.14.4 as builder
 
-COPY package.json package-lock.json ./
-
-
-## Storing node modules on a separate layer will prevent unnecessary npm installs at each build
-RUN npm i && mkdir /ng-app && cp -R ./node_modules ./ng-app
+RUN mkdir /ng-app
+COPY package.json /ng-app/package.json
+COPY package-lock.json /ng-app/package-lock.json
 
 WORKDIR /ng-app
+RUN cd /ng-app
+RUN npm i
 
-COPY . .
+COPY . /ng-app
 
-## Build the angular app in production mode and store the artifacts in dist folder
 RUN $(npm bin)/ng build --env prod
 
 ### STAGE 2: Setup ###
@@ -21,7 +19,6 @@ RUN $(npm bin)/ng build --env prod
 FROM nginx:1.13.6-alpine
 
 COPY --from=builder /ng-app/dist /usr/share/nginx/html
-#COPY dist /usr/share/nginx/html/
 COPY start_front.sh /tmp
 EXPOSE 80
 
@@ -32,4 +29,3 @@ ENV GR_ALERTS_URL "http://alerts-back:8081/#"
 ENV GR_ROUTINGMAP_URL "http://map-back:4200/"
 
 CMD ["sh", "/tmp/start_front.sh"]
-
