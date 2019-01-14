@@ -3,5 +3,6 @@ export const environment = {
   backend_sdk: 'GR_BACKEND_URL',
   alerts_url: 'GR_ALERTS_URL',
   statistics_url: 'GR_GRAFANA_URL',
-  routingmap_url: 'GR_ROUTINGMAP_URL'
+  routingmap_url: 'GR_ROUTINGMAP_URL',
+  gr_domain_url : 'GR_DOMAIN_URL'
 };
