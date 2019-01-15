@@ -26,5 +26,6 @@ ENV GR_BACKEND_URL "http://smartsdk-back:8080/back-sdk"
 ENV GR_GRAFANA_URL "http://grafana-back:3000/dashboard/db/airquality-dashboard"
 ENV GR_ALERTS_URL "http://alerts-back:8081/#"
 ENV GR_ROUTINGMAP_URL "http://map-back:4200/"
+ENV GR_DOMAIN_URL "greenroutesdk.com.mx"
 
 CMD ["sh", "/tmp/start_front.sh"]

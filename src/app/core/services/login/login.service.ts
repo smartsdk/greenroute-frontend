@@ -20,6 +20,7 @@ const login_url = base_rest_path + '/login';
 const logout_url = base_rest_path + '/logout';
 const valid_token_url = base_rest_path + '/valid-token';
 const refresh_token_url = base_rest_path + '/refresh-token';
+const domain_url = environment.gr_domain_url;
 
 @Injectable()
 export class LoginService {
@@ -106,12 +107,11 @@ export class LoginService {
     localStorage.setItem(constants.tokenInfoName, JSON.stringify(identityUser));
 
     // Uncomment to use on secure domain
-    // var options: CookieOptionsArgs = {
-    //   domain: "greenroutesdk.com.mx",
-    //   secure: true
-    // }
+    var options: CookieOptionsArgs = {
+      domain: "."+ domain_url
+    }
 
-    this.cookieService.putObject(constants.tokenInfoName, JSON.stringify(identityUser)/*, options*/);
+    this.cookieService.putObject(constants.tokenInfoName, JSON.stringify(identityUser), options);
   }
 
   private deleteToken() {
